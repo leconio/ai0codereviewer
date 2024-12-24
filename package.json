@@ -14,7 +14,7 @@
     "commands": [
       {
         "command": "code-review.reviewChanges",
-        "title": "AI Review Staged Changes"
+        "title": "Review Changes"
       }
     ],
     "menus": {
@@ -38,25 +38,60 @@
     "configuration": {
       "title": "AI Code Review",
       "properties": {
-        "codeReview.claudeApiKey": {
+        "codeReview.prompt": {
+          "order": 1,
           "type": "string",
-          "default": "",
-          "description": "API Key for Claude"
+          "multiline": true,
+          "editPresentation": "multilineText",
+          "default":"作为一位资深的 Android 开发工程师，请帮我 review 以下代码变更，重点关注以下方面：\n\n1. 潜在 Bug：\n- 空指针异常处理\n- 线程安全问题\n- Activity/Fragment 生命周期处理\n- 内存泄漏风险\n- 异常情况和边界条件处理\n\n2. Android 最佳实践：\n- UI 线程（主线程）是否存在耗时操作\n- Handler/Coroutine 使用是否合理\n- Resource 资源使用是否规范\n- Context 使用是否合适\n- Android 组件生命周期是否正确管理\n\n3. 性能优化：\n- 是否存在不必要的对象创建\n- 列表和循环操作是否高效\n- 是否有潜在的 ANR 风险\n- 数据库和文件操作是否高效\n- 布局是否存在过度绘制\n\n4. 安全考虑：\n- 敏感数据处理\n- 权限使用是否最小化\n- WebView 相关安全配置\n- 外部输入数据校验\n\n请用以下格式提供审查意见：\n\n严重问题（必须修复）：\n[列出可能导致崩溃或严重性能问题的代码]\n\n警告（建议修复）：\n[列出可能在特定情况下导致问题的代码]\n\n优化建议：\n[列出可以改进的地方]\n\n以下是需要review的代码：\n[在这里粘贴你的代码变更]",
+          "description": "想让怎么做"
+        },
+        "codeReview.dropdown": {
+          "order": 2,
+          "type": "string",
+          "default": "OpenAI",
+          "enum": ["OpenAI", "Claude"],
+          "enumDescriptions": [
+            "OpenAI",
+            "Claude"
+          ],
+          "description": "请选择一个AI模型"
+        },
+        "codeReview.openaiApiUrl": {
+          "order": 3.1,
+          "type": "string",
+          "default": "https://api.openai.com/v1/chat/completions",
+          "description": "API URL for OpenAI"
         },
         "codeReview.openaiApiKey": {
+          "order": 3.2,
           "type": "string",
           "default": "",
           "description": "API Key for OpenAI"
         },
+        "codeReview.openaiModel": {
+          "order": 3.3,
+          "type": "string",
+          "default": "",
+          "description": "Model for OpenAI"
+        },
         "codeReview.claudeApiUrl": {
+          "order": 4.1,
           "type": "string",
           "default": "https://api.anthropic.com/v1/messages",
           "description": "API URL for Claude"
         },
-        "codeReview.openaiApiUrl": {
+        "codeReview.claudeApiKey": {
+          "order": 4.2,
           "type": "string",
-          "default": "https://api.openai.com/v1/chat/completions",
-          "description": "API URL for OpenAI"
+          "default": "",
+          "description": "API Key for Claude"
+        },
+        "codeReview.claudeModel": {
+          "order": 4.3,
+          "type": "string",
+          "default": "",
+          "description": "Model for Claude"
         }
       }
     }
