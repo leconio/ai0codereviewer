@@ -1,0 +1,94 @@
+{
+  "name": "ai-code-review",
+  "displayName": "AI Code Review",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "code-review.reviewChanges",
+        "title": "AI Review Staged Changes"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "code-review.reviewChanges",
+          "group": "navigation",
+          "when": "scmProvider == git",
+          "icon": "$(sparkle)"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "code-review.reviewChanges",
+          "when": "scmProvider == git && scmResourceGroup == index",
+          "group": "inline",
+          "icon": "$(sparkle)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "AI Code Review",
+      "properties": {
+        "codeReview.claudeApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for Claude"
+        },
+        "codeReview.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for OpenAI"
+        },
+        "codeReview.claudeApiUrl": {
+          "type": "string",
+          "default": "https://api.anthropic.com/v1/messages",
+          "description": "API URL for Claude"
+        },
+        "codeReview.openaiApiUrl": {
+          "type": "string",
+          "default": "https://api.openai.com/v1/chat/completions",
+          "description": "API URL for OpenAI"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "yarn run check-types && yarn run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "yarn run check-types && yarn run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
