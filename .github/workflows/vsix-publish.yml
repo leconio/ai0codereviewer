@@ -1,0 +1,39 @@
+name: Build VSIX
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.x'
+          
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g @vscode/vsce
+          
+      - name: Build VSIX
+        run: vsce package
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: "*.vsix"
+
+      # - name: Publish to VS Code Marketplace
+      #   if: success() && github.event_name == 'push'
+      #   run: vsce publish -p ${{ secrets.VSCE_PAT }}
